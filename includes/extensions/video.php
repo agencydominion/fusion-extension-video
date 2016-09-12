@@ -30,7 +30,7 @@ function fsn_init_video() {
 		
 		$output = '';
 		
-		$output .= '<div class="fsn-video '. $video_src .' '. fsn_style_params_class($atts) .'">';
+		$output .= '<div class="fsn-video '. esc_attr($video_src) .' '. fsn_style_params_class($atts) .'">';
 			//action executed before the video output
 			ob_start();
 			do_action('fsn_before_video', $atts);
@@ -71,13 +71,13 @@ function fsn_init_video() {
 						$output .= '<a'.fsn_get_button_anchor_attributes($button_object, 'video-button') .'>';
 					}
 					$output .= '<div class="embed-container">';
-						$output .= '<video id="video_'. $video_id .'" class="video-js vjs-default-skin" preload="auto" width="auto" height="auto"'. (!empty($poster_attrs) ? ' poster="'. $poster_attrs[0] .'"' : '') . (!empty($controls) ? ' controls' : '') . (!empty($autoplay) ? ' autoplay' : '') . (!empty($loop) ? ' loop' : '') . (empty($use_native_controls) ? ' data-setup="{}"' : '') .'>';
-							$output .= '<source src="'. $mp4_src .'" type="video/mp4" />';
+						$output .= '<video id="video_'. esc_attr($video_id) .'" class="video-js vjs-default-skin" preload="auto" width="auto" height="auto"'. (!empty($poster_attrs) ? ' poster="'. esc_attr($poster_attrs[0]) .'"' : '') . (!empty($controls) ? ' controls' : '') . (!empty($autoplay) ? ' autoplay' : '') . (!empty($loop) ? ' loop' : '') . (empty($use_native_controls) ? ' data-setup="{}"' : '') .'>';
+							$output .= '<source src="'. esc_url($mp4_src) .'" type="video/mp4" />';
 						$output .= '</video>';
 						$output .= !empty($video_button) && empty($autoplay) && empty($controls) ? '<span class="video-play-button"></span>' : '';
 					$output .= '</div>';
 					$output .= '<div class="video-fallback">';
-						$output .= '<img class="wp-post-image" src="'. $poster_attrs[0] .'" alt="" width="'. $poster_attrs[1] .'" height="'. $poster_attrs[2] .'">';
+						$output .= '<img class="wp-post-image" src="'. esc_url($poster_attrs[0]) .'" alt="" width="'. esc_attr($poster_attrs[1]) .'" height="'. esc_attr($poster_attrs[2]) .'">';
 						$output .= !empty($video_button) ? '<span class="video-play-button"></span>' : '';
 					$output .= '</div>';
 					if (!empty($video_button)) {
@@ -88,7 +88,7 @@ function fsn_init_video() {
 					if (!empty($youtube_url) && preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
 				    	$id = $match[1];
 						$output .= '<div class="embed-container">';
-							$output .= '<iframe src="http://www.youtube.com/embed/'. $id .'?enablejsapi=1&wmode=transparent" frameborder="0" allowfullscreen></iframe>';
+							$output .= '<iframe src="http://www.youtube.com/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent" frameborder="0" allowfullscreen></iframe>';
 						$output .= '</div>';
 					}
 					break;
@@ -96,7 +96,7 @@ function fsn_init_video() {
 					if (!empty($vimeo_url) && preg_match("/(?:https?:\/\/)?(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/", $vimeo_url, $match)) {
 				    	$id = $match[3];
 						$output .= '<div class="embed-container">';
-							$output .= '<iframe src="https://player.vimeo.com/video/'. $id .'?color=ffffff&title=0&byline=0&portrait=0&api=1" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+							$output .= '<iframe src="https://player.vimeo.com/video/'. esc_attr($id) .'?color=ffffff&title=0&byline=0&portrait=0&api=1" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 						$output .= '</div>';
 					}
 					break;
