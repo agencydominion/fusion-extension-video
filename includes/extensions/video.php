@@ -147,6 +147,9 @@ function fsn_video_shortcode( $atts, $content ) {
 		'vimeo_url' => ''
 	), $atts ) );
 	
+	//plugin
+	wp_enqueue_script('fsn_video');
+	
 	$output = '';
 	
 	$output .= '<div class="fsn-video '. esc_attr($video_src) .' '. fsn_style_params_class($atts) .'">';
@@ -159,8 +162,6 @@ function fsn_video_shortcode( $atts, $content ) {
 			case 'self_hosted':
 				//videoJS
 			 	wp_enqueue_script('video_js');
-				//plugin
-				wp_enqueue_script('fsn_video');
 				
 				// Add VideoJS Flash Fallback to footer
 				add_action('wp_footer', 'fsn_video_js_flash_fallback', 99);
