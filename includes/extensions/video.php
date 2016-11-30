@@ -105,6 +105,16 @@ function fsn_init_video() {
 				)
 			),
 			array(
+				'type' => 'checkbox',
+				'param_name' => 'mute',
+				'label' => __('Mute', 'fusion-extension-video'),
+				'section' => 'advanced',
+				'dependency' => array(
+					'param_name' => 'video_src',
+					'value' => 'self_hosted'
+				)
+			),
+			array(
 				'type' => 'button',
 				'param_name' => 'video_button',
 				'label' => __('Button', 'fusion-extension-video'),
@@ -142,6 +152,7 @@ function fsn_video_shortcode( $atts, $content ) {
 		'controls' => '',
 		'autoplay' => '',
 		'loop' => '',
+		'mute' => '',
 		'video_button' => '',
 		'youtube_url' => '',
 		'vimeo_url' => ''
@@ -191,13 +202,13 @@ function fsn_video_shortcode( $atts, $content ) {
 					$output .= '<a'.fsn_get_button_anchor_attributes($button_object, 'video-button') .'>';
 				}
 				$output .= '<div class="embed-container">';
-					$output .= '<video id="video_'. esc_attr($video_id) .'" class="video-js vjs-default-skin" preload="auto" width="auto" height="auto"'. (!empty($poster_attrs) ? ' poster="'. esc_attr($poster_attrs[0]) .'"' : '') . (!empty($controls) ? ' controls' : '') . (!empty($autoplay) ? ' autoplay' : '') . (!empty($loop) ? ' loop' : '') . (empty($use_native_controls) ? ' data-setup="{}"' : '') .'>';
+					$output .= '<video id="video_'. esc_attr($video_id) .'" class="video-js vjs-default-skin" preload="auto" width="auto" height="auto"'. (!empty($poster) ? ' poster="'. esc_attr($poster_attrs[0]) .'"' : '') . (!empty($controls) ? ' controls' : '') . (!empty($autoplay) ? ' autoplay' : '') . (!empty($loop) ? ' loop' : '') . (!empty($mute) ? ' muted' : '') . (empty($use_native_controls) ? ' data-setup="{}"' : '') .'>';
 						$output .= '<source src="'. esc_url($mp4_src) .'" type="video/mp4" />';
 					$output .= '</video>';
 					$output .= !empty($video_button) && empty($autoplay) && empty($controls) ? '<span class="video-play-button"></span>' : '';
 				$output .= '</div>';
 				$output .= '<div class="video-fallback">';
-					$output .= '<img class="wp-post-image" src="'. esc_url($poster_attrs[0]) .'" alt="" width="'. esc_attr($poster_attrs[1]) .'" height="'. esc_attr($poster_attrs[2]) .'">';
+					$output .= !empty($poster) ? '<img class="wp-post-image" src="'. esc_url($poster_attrs[0]) .'" alt="" width="'. esc_attr($poster_attrs[1]) .'" height="'. esc_attr($poster_attrs[2]) .'">': '';
 					$output .= !empty($video_button) ? '<span class="video-play-button"></span>' : '';
 				$output .= '</div>';
 				if (!empty($video_button)) {
