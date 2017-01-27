@@ -219,7 +219,7 @@ function fsn_video_shortcode( $atts, $content ) {
 				if (!empty($youtube_url) && preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
 			    	$id = $match[1];
 					$output .= '<div class="embed-container">';
-						$output .= '<iframe src="http://www.youtube.com/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent" frameborder="0" allowfullscreen></iframe>';
+						$output .= '<iframe src="//www.youtube.com/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent" frameborder="0" allowfullscreen></iframe>';
 					$output .= '</div>';
 				}
 				break;
