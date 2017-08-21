@@ -7,9 +7,11 @@
  * Plugin Name: Fusion : Extension - Video
  * Plugin URI: http://www.agencydominion.com/fusion/
  * Description: Video Extension Package for Fusion.
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Agency Dominion
  * Author URI: http://agencydominion.com
+ * Text Domain: fusion-extension-video
+ * Domain Path: /languages/
  * License: GPL2
  */
  
@@ -25,11 +27,22 @@ class FusionExtensionVideo	{
 	public function __construct() {
 						
 		// Initialize the language files
-		load_plugin_textdomain( 'fusion-extension-video', false, plugin_dir_url( __FILE__ ) . 'languages' );
+		add_action('plugins_loaded', array($this, 'load_textdomain'));
 		
 		// Enqueue front end scripts and styles
 		add_action('wp_enqueue_scripts', array($this, 'front_enqueue_scripts_styles'));
 		
+	}
+	
+	/**
+	 * Load Textdomain
+	 *
+	 * @since 1.2.1
+	 *
+	 */
+	 
+	public function load_textdomain() {
+		load_plugin_textdomain( 'fusion-extension-video', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
