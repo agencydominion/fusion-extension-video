@@ -24,8 +24,7 @@ function fsn_init_video() {
 			'' => __('Choose video source.'),
 			'youtube' => __('YouTube', 'fusion-extension-video'),
 			'vimeo' => __('Vimeo', 'fusion-extension-video'),
-			'self_hosted' => __('Self-Hosted', 'fusion-extension-video'),
-			'iframe_embed' => __('iFrame Embed', 'fusion-extension-video')
+			'self_hosted' => __('Self-Hosted', 'fusion-extension-video')
 		);
 		$video_src_options = apply_filters('fsn_video_src_options', $video_src_options);
 				
@@ -124,17 +123,6 @@ function fsn_init_video() {
 					'param_name' => 'video_src',
 					'value' => 'self_hosted'
 				)
-			),
-			array(
-				'type' => 'textarea',
-				'param_name' => 'iframe_code',
-				'label' => __('iFrame Code', 'fusion'),
-				'encode_base64' => true,
-				'help' => __('Video iFrame embed code.', 'fusion-extension-video'),
-				'dependency' => array(
-					'param_name' => 'video_src',
-					'value' => 'iframe_embed'
-				)
 			)			
 		);
 		
@@ -144,7 +132,7 @@ function fsn_init_video() {
 		fsn_map(array(
 			'name' => __('Video', 'fusion-extension-video'),
 			'shortcode_tag' => 'fsn_video',	
-			'description' => __('Add video. Youtube, Vimeo, Self-hosted and embedded iframe videos are supported.', 'fusion-extension-video'),
+			'description' => __('Add video. Youtube, Vimeo, and Self-hosted videos are supported.', 'fusion-extension-video'),
 			'icon' => 'play_circle_filled',
 			'disable_style_params' => array('text_align','text_align_xs','font_size','color'),
 			'params' => $video_params
@@ -167,8 +155,7 @@ function fsn_video_shortcode( $atts, $content ) {
 		'mute' => '',
 		'video_button' => '',
 		'youtube_url' => '',
-		'vimeo_url' => '',
-		'iframe_code' => ''
+		'vimeo_url' => ''
 	), $atts ) );
 	
 	//plugin
@@ -241,13 +228,6 @@ function fsn_video_shortcode( $atts, $content ) {
 			    	$id = $match[3];
 					$output .= '<div class="embed-container">';
 						$output .= '<iframe src="//player.vimeo.com/video/'. esc_attr($id) .'?color=ffffff&title=0&byline=0&portrait=0&api=1" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-					$output .= '</div>';
-				}
-				break;
-			case 'iframe_embed':
-				if(!empty($iframe_code)){
-					$output .= '<div class="embed-container">';
-						$output .= base64_decode( wp_strip_all_tags($iframe_code) );
 					$output .= '</div>';
 				}
 				break;
