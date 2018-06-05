@@ -17,9 +17,9 @@
 
 add_action('init', 'fsn_init_video', 12);
 function fsn_init_video() {
-	
+
 	if (function_exists('fsn_map')) {
-				
+
 		$video_src_options = array(
 			'' => __('Choose video source.'),
 			'youtube' => __('YouTube', 'fusion-extension-video'),
@@ -27,7 +27,7 @@ function fsn_init_video() {
 			'self_hosted' => __('Self-Hosted', 'fusion-extension-video')
 		);
 		$video_src_options = apply_filters('fsn_video_src_options', $video_src_options);
-				
+
 		$video_params = array(
 			array(
 				'type' => 'select',
@@ -123,15 +123,15 @@ function fsn_init_video() {
 					'param_name' => 'video_src',
 					'value' => 'self_hosted'
 				)
-			)			
+			)
 		);
-		
+
 		//filter video params
 		$video_params = apply_filters('fsn_video_params', $video_params);
-		
+
 		fsn_map(array(
 			'name' => __('Video', 'fusion-extension-video'),
-			'shortcode_tag' => 'fsn_video',	
+			'shortcode_tag' => 'fsn_video',
 			'description' => __('Add video. Youtube, Vimeo, and Self-hosted videos are supported.', 'fusion-extension-video'),
 			'icon' => 'play_circle_filled',
 			'disable_style_params' => array('text_align','text_align_xs','font_size','color'),
@@ -144,8 +144,8 @@ function fsn_init_video() {
  * Output Shortcode
  */
 
-function fsn_video_shortcode( $atts, $content ) {		
-	extract( shortcode_atts( array(							
+function fsn_video_shortcode( $atts, $content ) {
+	extract( shortcode_atts( array(
 		'video_src' => '',
 		'mp4_id' => '',
 		'poster' => '',
@@ -157,28 +157,28 @@ function fsn_video_shortcode( $atts, $content ) {
 		'youtube_url' => '',
 		'vimeo_url' => ''
 	), $atts ) );
-	
+
 	//plugin
 	wp_enqueue_script('fsn_video');
-	
+
 	$output = '';
-	
+
 	$output .= '<div class="fsn-video '. esc_attr($video_src) .' '. fsn_style_params_class($atts) .'">';
 		//action executed before the video output
 		ob_start();
 		do_action('fsn_before_video', $atts);
 		$output .= ob_get_clean();
-		
+
 		switch($video_src) {
 			case 'self_hosted':
 				//videoJS
 			 	wp_enqueue_script('video_js');
-				
+
 				// Add VideoJS Flash Fallback to footer
 				add_action('wp_footer', 'fsn_video_js_flash_fallback', 99);
-				
+
 				$video_id = uniqid();
-				
+
 				if (!empty($mp4_id)) {
 					$mp4_src = wp_get_attachment_url($mp4_id);
 					//$video_metadata = wp_get_attachment_metadata($mp4_id);
@@ -188,7 +188,7 @@ function fsn_video_shortcode( $atts, $content ) {
 				if (!empty($poster)) {
 					$poster_attrs = wp_get_attachment_image_src($poster, 'full');
 				}
-				
+
 				$detect = new Mobile_Detect();
 				if ($detect->isMobile()) {
 					$controls = true;
@@ -219,7 +219,7 @@ function fsn_video_shortcode( $atts, $content ) {
 				if (!empty($youtube_url) && preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
 			    	$id = $match[1];
 					$output .= '<div class="embed-container">';
-						$output .= '<iframe src="//www.youtube.com/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent" frameborder="0" allowfullscreen></iframe>';
+						$output .= '<iframe src="//www.youtube.com/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent&rel=0" frameborder="0" allowfullscreen></iframe>';
 					$output .= '</div>';
 				}
 				break;
@@ -236,9 +236,9 @@ function fsn_video_shortcode( $atts, $content ) {
 		ob_start();
 		do_action('fsn_after_video', $atts);
 		$output .= ob_get_clean();
-		
+
 	$output .= '</div>';
-	
+
 	return $output;
 }
 add_shortcode('fsn_video', 'fsn_video_shortcode');

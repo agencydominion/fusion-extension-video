@@ -2,19 +2,19 @@
 /**
  * @package Fusion_Extension_Video
  */
- 
+
 /**
  * Plugin Name: Fusion : Extension - Video
  * Plugin URI: http://www.agencydominion.com/fusion/
  * Description: Video Extension Package for Fusion.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: Agency Dominion
  * Author URI: http://agencydominion.com
  * Text Domain: fusion-extension-video
  * Domain Path: /languages/
  * License: GPL2
  */
- 
+
 /**
  * FusionExtensionVideo class.
  *
@@ -23,24 +23,24 @@
  * @since 1.0.0
  */
 
-class FusionExtensionVideo	{ 
+class FusionExtensionVideo	{
 	public function __construct() {
-						
+
 		// Initialize the language files
 		add_action('plugins_loaded', array($this, 'load_textdomain'));
-		
+
 		// Enqueue front end scripts and styles
 		add_action('wp_enqueue_scripts', array($this, 'front_enqueue_scripts_styles'));
-		
+
 	}
-	
+
 	/**
 	 * Load Textdomain
 	 *
 	 * @since 1.2.1
 	 *
 	 */
-	 
+
 	public function load_textdomain() {
 		load_plugin_textdomain( 'fusion-extension-video', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
@@ -51,7 +51,7 @@ class FusionExtensionVideo	{
 	 * @since 1.0.0
 	 *
 	 */
-	 
+
 	 public function front_enqueue_scripts_styles() {
 	 	//scripts
 	 	wp_register_script( 'video_js', plugin_dir_url( __FILE__ ) . 'includes/utilities/video-js/video.js', array('jquery'), '4.11.2', true );
@@ -60,7 +60,7 @@ class FusionExtensionVideo	{
 	 	wp_enqueue_style( 'video_js', plugin_dir_url( __FILE__ ) . 'includes/utilities/video-js/video-js.min.css', false, '4.11.2' );
 		wp_enqueue_style( 'fsn_video', plugin_dir_url( __FILE__ ) . 'includes/css/fusion-extension-video.css', false, '1.0.0' );
 	}
-	
+
 }
 
 $fsn_extension_video = new FusionExtensionVideo();
