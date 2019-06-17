@@ -123,7 +123,18 @@ function fsn_init_video() {
 					'param_name' => 'video_src',
 					'value' => 'self_hosted'
 				)
-			)
+			),
+			array(
+				'type' => 'checkbox',
+				'param_name' => 'privacy_mode',
+				'label' => __('Privacy Mode', 'fusion-extension-video'),
+				'help' => __('Enable Privacy Enhanced Mode for YouTube.', 'fusion-extension-video'),
+				'section' => 'advanced',
+				'dependency' => array(
+					'param_name' => 'video_src',
+					'value' => 'youtube'
+				)
+			),
 		);
 
 		//filter video params
@@ -155,7 +166,8 @@ function fsn_video_shortcode( $atts, $content ) {
 		'mute' => '',
 		'video_button' => '',
 		'youtube_url' => '',
-		'vimeo_url' => ''
+		'vimeo_url' => '',
+		'privacy_mode' => ''
 	), $atts ) );
 
 	//plugin
@@ -218,8 +230,13 @@ function fsn_video_shortcode( $atts, $content ) {
 			case 'youtube':
 				if (!empty($youtube_url) && preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
 			    	$id = $match[1];
+						if(!empty($privacy_mode)) {
+							$youtube_embed_url = '//www.youtube-nocookie.com';
+						} else {
+							$youtube_embed_url = '//www.youtube.com';
+						}
 					$output .= '<div class="embed-container">';
-						$output .= '<iframe src="//www.youtube.com/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent&rel=0" frameborder="0" allowfullscreen></iframe>';
+						$output .= '<iframe src="' . $youtube_embed_url . '/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent&rel=0" frameborder="0" allowfullscreen></iframe>';
 					$output .= '</div>';
 				}
 				break;
