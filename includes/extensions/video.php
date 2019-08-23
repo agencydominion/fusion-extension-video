@@ -133,18 +133,19 @@ function fsn_init_video() {
 				'dependency' => array(
 					'param_name' => 'video_src',
 					'value' => 'youtube'
-				),
-				array(
-					'type' => 'checkbox',
-					'param_name' => 'do_not_track',
-					'label' => __('Do Not Track', 'fusion-extension-video'),
-					'help' => __('Enable Do Not Track mode for Vimeo.', 'fusion-extension-video'),
-					'section' => 'advanced',
-					'dependency' => array(
-						'param_name' => 'video_src',
-						'value' => 'vimeo'
-					)
+				)
 			),
+			array(
+				'type' => 'checkbox',
+				'param_name' => 'do_not_track',
+				'label' => __('Do Not Track', 'fusion-extension-video'),
+				'help' => __('Enable Do Not Track mode for Vimeo.', 'fusion-extension-video'),
+				'section' => 'advanced',
+				'dependency' => array(
+					'param_name' => 'video_src',
+					'value' => 'vimeo'
+				)
+			)
 		);
 
 		//filter video params
@@ -177,7 +178,8 @@ function fsn_video_shortcode( $atts, $content ) {
 		'video_button' => '',
 		'youtube_url' => '',
 		'vimeo_url' => '',
-		'privacy_mode' => ''
+		'privacy_mode' => '',
+		'do_not_track' => ''
 	), $atts ) );
 
 	//plugin
@@ -254,7 +256,7 @@ function fsn_video_shortcode( $atts, $content ) {
 				if (!empty($vimeo_url) && preg_match("/(?:https?:\/\/)?(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/", $vimeo_url, $match)) {
 			    	$id = $match[3];
 					$output .= '<div class="embed-container">';
-						$output .= '<iframe src="//player.vimeo.com/video/'. esc_attr($id) .'?color=ffffff&title=0&byline=0&portrait=0&api=1'. (!empty($do_not_track) ? 'dnt=1' : '') . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+						$output .= '<iframe src="//player.vimeo.com/video/'. esc_attr($id) .'?color=ffffff&title=0&byline=0&portrait=0&api=1'. (!empty($do_not_track) ? '&dnt=1' : '') . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 					$output .= '</div>';
 				}
 				break;
