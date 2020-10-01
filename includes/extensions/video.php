@@ -54,6 +54,16 @@ function fsn_init_video() {
 				)
 			),
 			array(
+				'type' => 'text',
+				'param_name' => 'video_title',
+				'label' => __('Title', 'fusion-extension-video'),
+				'help' => __('Input the video title. Output as the title attribute on the video container.', 'fusion-extension-video'),
+				'dependency' => array(
+					'param_name' => 'video_src',
+					'value' => array('youtube','vimeo')
+				)
+			),
+			array(
 				'type' => 'video',
 				'param_name' => 'mp4_id',
 				'label' => __('MP4 Video', 'fusion-extension-video'),
@@ -169,6 +179,7 @@ function fsn_init_video() {
 function fsn_video_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array(
 		'video_src' => '',
+		'video_title' => '',
 		'mp4_id' => '',
 		'poster' => '',
 		'controls' => '',
@@ -248,7 +259,7 @@ function fsn_video_shortcode( $atts, $content ) {
 							$youtube_embed_url = '//www.youtube.com';
 						}
 					$output .= '<div class="embed-container">';
-						$output .= '<iframe src="' . $youtube_embed_url . '/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent&rel=0" frameborder="0" allowfullscreen></iframe>';
+						$output .= '<iframe src="' . $youtube_embed_url . '/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent&rel=0" frameborder="0" allowfullscreen'. (!empty($video_title) ? ' title="'. esc_attr($video_title) .'"' : '') .'></iframe>';
 					$output .= '</div>';
 				}
 				break;
@@ -256,7 +267,7 @@ function fsn_video_shortcode( $atts, $content ) {
 				if (!empty($vimeo_url) && preg_match("/(?:https?:\/\/)?(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/", $vimeo_url, $match)) {
 			    	$id = $match[3];
 					$output .= '<div class="embed-container">';
-						$output .= '<iframe src="//player.vimeo.com/video/'. esc_attr($id) .'?color=ffffff&title=0&byline=0&portrait=0&api=1'. (!empty($do_not_track) ? '&dnt=1' : '') . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+						$output .= '<iframe src="//player.vimeo.com/video/'. esc_attr($id) .'?color=ffffff&title=0&byline=0&portrait=0&api=1'. (!empty($do_not_track) ? '&dnt=1' : '') . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen'. (!empty($video_title) ? ' title="'. esc_attr($video_title) .'"' : '') .'></iframe>';
 					$output .= '</div>';
 				}
 				break;
