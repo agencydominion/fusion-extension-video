@@ -208,6 +208,10 @@ function fsn_video_shortcode( $atts, $content ) {
 			case 'self_hosted':
 				//videoJS
 			 	wp_enqueue_script('video_js');
+				$on_demand = apply_filters('fsn_perf_video_on_demand', false);
+				if ($on_demand) {
+					wp_enqueue_style('video_js'); //fsn_perf_video_on_demand: registered, not enqueued, on every page
+				}
 
 				// Add VideoJS Flash Fallback to footer
 				add_action('wp_footer', 'fsn_video_js_flash_fallback', 99);
@@ -237,7 +241,7 @@ function fsn_video_shortcode( $atts, $content ) {
 					$output .= '<a'.fsn_get_button_anchor_attributes($button_object, 'video-button') .'>';
 				}
 				$output .= '<div class="embed-container">';
-					$output .= '<video id="video_'. esc_attr($video_id) .'" class="video-js vjs-default-skin" preload="auto" width="auto" height="auto"'. (!empty($poster) ? ' poster="'. esc_attr($poster_attrs[0]) .'"' : '') . (!empty($controls) ? ' controls' : '') . (!empty($autoplay) ? ' autoplay' : '') . (!empty($loop) ? ' loop' : '') . (!empty($mute) ? ' muted' : '') . (empty($use_native_controls) ? ' data-setup="{}"' : '') .'>';
+					$output .= '<video id="video_'. esc_attr($video_id) .'" class="video-js vjs-default-skin" preload="'. (!empty($on_demand) ? 'metadata' : 'auto') .'" width="auto" height="auto"'. (!empty($poster) ? ' poster="'. esc_attr($poster_attrs[0]) .'"' : '') . (!empty($controls) ? ' controls' : '') . (!empty($autoplay) ? ' autoplay' : '') . (!empty($loop) ? ' loop' : '') . (!empty($mute) ? ' muted' : '') . (empty($use_native_controls) ? ' data-setup="{}"' : '') .'>';
 						$output .= '<source src="'. esc_url($mp4_src) .'" type="video/mp4" />';
 					$output .= '</video>';
 					$output .= !empty($video_button) && empty($autoplay) && empty($controls) ? '<span class="video-play-button"></span>' : '';
@@ -259,7 +263,7 @@ function fsn_video_shortcode( $atts, $content ) {
 							$youtube_embed_url = '//www.youtube.com';
 						}
 					$output .= '<div class="embed-container">';
-						$output .= '<iframe src="' . $youtube_embed_url . '/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent&rel=0" frameborder="0" allowfullscreen'. (!empty($video_title) ? ' title="'. esc_attr($video_title) .'"' : '') .'></iframe>';
+						$output .= '<iframe src="' . $youtube_embed_url . '/embed/'. esc_attr($id) .'?enablejsapi=1&wmode=transparent&rel=0" frameborder="0" allowfullscreen'. (apply_filters('fsn_perf_video_on_demand', false) ? ' loading="lazy"' : ''). (!empty($video_title) ? ' title="'. esc_attr($video_title) .'"' : '') .'></iframe>';
 					$output .= '</div>';
 				}
 				break;
@@ -267,7 +271,7 @@ function fsn_video_shortcode( $atts, $content ) {
 				if (!empty($vimeo_url) && preg_match("/(?:https?:\/\/)?(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/", $vimeo_url, $match)) {
 			    	$id = $match[3];
 					$output .= '<div class="embed-container">';
-						$output .= '<iframe src="//player.vimeo.com/video/'. esc_attr($id) .'?color=ffffff&title=0&byline=0&portrait=0&api=1'. (!empty($do_not_track) ? '&dnt=1' : '') . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen'. (!empty($video_title) ? ' title="'. esc_attr($video_title) .'"' : '') .'></iframe>';
+						$output .= '<iframe src="//player.vimeo.com/video/'. esc_attr($id) .'?color=ffffff&title=0&byline=0&portrait=0&api=1'. (!empty($do_not_track) ? '&dnt=1' : '') . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen'. (apply_filters('fsn_perf_video_on_demand', false) ? ' loading="lazy"' : ''). (!empty($video_title) ? ' title="'. esc_attr($video_title) .'"' : '') .'></iframe>';
 					$output .= '</div>';
 				}
 				break;
