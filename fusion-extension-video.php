@@ -7,7 +7,7 @@
  * Plugin Name: Fusion : Extension - Video
  * Plugin URI: http://www.agencydominion.com/fusion/
  * Description: Video Extension Package for Fusion.
- * Version: 1.5.0
+ * Version: 1.6.0
  * Author: Agency Dominion
  * Author URI: http://agencydominion.com
  * Text Domain: fusion-extension-video
@@ -57,7 +57,12 @@ class FusionExtensionVideo	{
 	 	wp_register_script( 'video_js', plugin_dir_url( __FILE__ ) . 'includes/utilities/video-js/video.js', array('jquery'), '4.11.2', true );
 	 	wp_register_script( 'fsn_video', plugin_dir_url( __FILE__ ) . 'includes/js/fusion-extension-video.js', array('jquery','fsn_core'), '1.0.0', true );
 	 	//styles
-	 	wp_enqueue_style( 'video_js', plugin_dir_url( __FILE__ ) . 'includes/utilities/video-js/video-js.min.css', false, '4.11.2' );
+	 	//fsn_perf_video_on_demand (default off): the video-js CSS is enqueued only where a self-hosted player renders (video.php)
+	 	if (apply_filters('fsn_perf_video_on_demand', false)) {
+	 		wp_register_style( 'video_js', plugin_dir_url( __FILE__ ) . 'includes/utilities/video-js/video-js.min.css', false, '4.11.2' );
+	 	} else {
+	 		wp_enqueue_style( 'video_js', plugin_dir_url( __FILE__ ) . 'includes/utilities/video-js/video-js.min.css', false, '4.11.2' );
+	 	}
 		wp_enqueue_style( 'fsn_video', plugin_dir_url( __FILE__ ) . 'includes/css/fusion-extension-video.css', false, '1.0.0' );
 	}
 
